@@ -268,23 +268,22 @@ export default function Board({ session }) {
   return (
     <div className="h-screen flex flex-col bg-pink-50">
       {/* Header */}
-      <header className="bg-white border-b border-pink-100 px-3 sm:px-5 py-3 flex items-center gap-1 sm:gap-0 sm:justify-between flex-shrink-0 shadow-sm">
-        <h1 className="flex-1 sm:flex-none text-base font-bold text-rose-700 tracking-tight text-center sm:text-left">
+      <header className="bg-white border-b border-pink-100 px-3 sm:px-5 py-3 flex items-center justify-between flex-shrink-0 shadow-sm">
+        <h1 className="text-base font-bold text-rose-700 tracking-tight">
           <span className="sm:hidden">🐰 BCM</span>
           <span className="hidden sm:inline">🐰 Bunny and Cage Master To-Do List</span>
         </h1>
-        {/* `contents` dissolves the div on mobile so all 4 items share flex-1 equally */}
-        <div className="contents sm:flex sm:items-center sm:gap-3">
+        <div className="flex items-center gap-1 sm:gap-3">
           <button
             onClick={() => setModalState({})}
-            className="flex-1 sm:flex-none py-1.5 px-1 sm:px-3 text-xs bg-rose-400 hover:bg-rose-500 text-white font-medium rounded-lg transition-colors text-center"
+            className="flex-1 py-1.5 px-2 sm:px-3 text-xs bg-rose-400 hover:bg-rose-500 text-white font-medium rounded-lg transition-colors text-center"
           >
             <span className="sm:hidden">+</span>
             <span className="hidden sm:inline">+ New Task</span>
           </button>
           <button
             onClick={() => setShowTypeManager(true)}
-            className="flex-1 sm:flex-none py-1.5 px-1 sm:px-3 text-xs text-slate-600 hover:bg-pink-50 rounded-lg transition-colors text-center"
+            className="flex-1 py-1.5 px-2 sm:px-3 text-xs text-slate-600 hover:bg-pink-50 rounded-lg transition-colors text-center"
           >
             <span className="sm:hidden">Types</span>
             <span className="hidden sm:inline">Manage Types</span>
@@ -292,7 +291,7 @@ export default function Board({ session }) {
           <span className="text-xs text-slate-400 hidden sm:block">{session.user.email}</span>
           <button
             onClick={() => supabase.auth.signOut()}
-            className="flex-1 sm:flex-none py-1.5 px-1 sm:px-3 text-xs text-slate-500 hover:bg-pink-50 rounded-lg transition-colors text-center"
+            className="flex-1 py-1.5 px-2 sm:px-3 text-xs text-slate-500 hover:bg-pink-50 rounded-lg transition-colors text-center"
           >
             Sign Out
           </button>
