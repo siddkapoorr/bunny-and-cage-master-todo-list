@@ -3,6 +3,7 @@ import {
   DndContext,
   DragOverlay,
   PointerSensor,
+  TouchSensor,
   KeyboardSensor,
   useSensor,
   useSensors,
@@ -72,6 +73,7 @@ export default function Board({ session }) {
   // ── Sensors ────────────────────────────────────────────────────────────────
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   )
 
@@ -316,10 +318,10 @@ export default function Board({ session }) {
             />
           </div>
 
-          {/* Mon–Sun — 7 columns */}
-          <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(7, minmax(0, 1fr))' }}>
+          {/* Mon–Sun — scrollable on mobile, 7-column grid on desktop */}
+          <div className="flex gap-3 overflow-x-auto pb-1 lg:grid lg:overflow-visible lg:pb-0" style={{ gridTemplateColumns: 'repeat(7, minmax(0, 1fr))' }}>
             {DAY_STATUSES.map(s => (
-              <div key={s.id} className="bg-white rounded-xl border border-pink-100 shadow-sm p-3 flex flex-col min-h-[200px]">
+              <div key={s.id} className="bg-white rounded-xl border border-pink-100 shadow-sm p-3 flex flex-col min-h-[200px] flex-shrink-0 w-64 lg:w-auto">
                 <Column
                   id={s.id}
                   label={s.label}

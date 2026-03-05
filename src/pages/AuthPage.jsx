@@ -43,7 +43,8 @@ export default function AuthPage() {
         <div className="mb-8 text-center">
           <div className="text-4xl mb-3">🐰</div>
           <h1 className="text-xl font-bold text-rose-700 leading-snug">
-            Bunny and Cage Master To-Do List
+            <span className="block">Bunny and Cage Master</span>
+            <span className="block">To-Do List</span>
           </h1>
           <p className="text-slate-400 text-xs mt-2">
             {mode === 'login' ? 'Sign in to your account' : 'Create a new account'}
