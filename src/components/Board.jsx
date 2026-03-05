@@ -270,7 +270,7 @@ export default function Board({ session }) {
       {/* Header */}
       <header className="bg-white border-b border-pink-100 px-5 py-3 flex items-center justify-between flex-shrink-0 shadow-sm">
         <h1 className="text-base font-bold text-rose-700 tracking-tight">
-          <span className="sm:hidden">🐰 BCM To-Do List</span>
+          <span className="sm:hidden">🐰 BCM</span>
           <span className="hidden sm:inline">🐰 Bunny and Cage Master To-Do List</span>
         </h1>
         <div className="flex items-center gap-3">
