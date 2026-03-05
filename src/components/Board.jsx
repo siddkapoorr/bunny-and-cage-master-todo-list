@@ -270,14 +270,16 @@ export default function Board({ session }) {
       {/* Header */}
       <header className="bg-white border-b border-pink-100 px-5 py-3 flex items-center justify-between flex-shrink-0 shadow-sm">
         <h1 className="text-base font-bold text-rose-700 tracking-tight">
-          🐰 Bunny and Cage Master To-Do List
+          <span className="sm:hidden">🐰 BCM To-Do List</span>
+          <span className="hidden sm:inline">🐰 Bunny and Cage Master To-Do List</span>
         </h1>
         <div className="flex items-center gap-3">
           <button
             onClick={() => setModalState({})}
             className="px-3 py-1.5 text-xs bg-rose-400 hover:bg-rose-500 text-white font-medium rounded-lg transition-colors"
           >
-            + New Task
+            <span className="sm:hidden">+</span>
+            <span className="hidden sm:inline">+ New Task</span>
           </button>
           <button
             onClick={() => setShowTypeManager(true)}
