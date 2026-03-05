@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 
 export default function AuthPage() {
-  const [mode, setMode] = useState('login')
+  const [mode, setMode] = useState('login') // 'login' | 'signup' | 'forgot'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -19,10 +19,16 @@ export default function AuthPage() {
       if (mode === 'login') {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
-      } else {
+      } else if (mode === 'signup') {
         const { error } = await supabase.auth.signUp({ email, password })
         if (error) throw error
         setMessage('Check your email for a confirmation link!')
+      } else {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin,
+        })
+        if (error) throw error
+        setMessage('Password reset email sent! Check your inbox.')
       }
     } catch (err) {
       setError(err.message)
@@ -31,11 +37,13 @@ export default function AuthPage() {
     }
   }
 
-  function switchMode() {
-    setMode(mode === 'login' ? 'signup' : 'login')
+  function switchMode(next) {
+    setMode(next)
     setError(null)
     setMessage(null)
   }
+
+  const subtitle = { login: 'Sign in to your account', signup: 'Create a new account', forgot: 'Reset your password' }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 flex items-center justify-center p-4">
@@ -46,9 +54,7 @@ export default function AuthPage() {
             <span className="block">Bunny and Cage Master</span>
             <span className="block">To-Do List</span>
           </h1>
-          <p className="text-slate-400 text-xs mt-2">
-            {mode === 'login' ? 'Sign in to your account' : 'Create a new account'}
-          </p>
+          <p className="text-slate-400 text-xs mt-2">{subtitle[mode]}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -63,18 +69,33 @@ export default function AuthPage() {
               placeholder="you@example.com"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="w-full px-3 py-2 rounded-lg border border-pink-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-transparent"
-              placeholder="••••••••"
-            />
-          </div>
+
+          {mode !== 'forgot' && (
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full px-3 py-2 rounded-lg border border-pink-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-transparent"
+                placeholder="••••••••"
+              />
+            </div>
+          )}
+
+          {mode === 'login' && (
+            <div className="text-right -mt-1">
+              <button
+                type="button"
+                onClick={() => switchMode('forgot')}
+                className="text-xs text-rose-400 hover:text-rose-500"
+              >
+                Forgot password?
+              </button>
+            </div>
+          )}
 
           {error && (
             <div className="px-3 py-2 bg-red-50 border border-red-100 text-red-600 rounded-lg text-sm">
@@ -92,18 +113,33 @@ export default function AuthPage() {
             disabled={loading}
             className="w-full py-2.5 bg-rose-400 hover:bg-rose-500 disabled:bg-rose-200 text-white text-sm font-semibold rounded-lg transition-colors"
           >
-            {loading ? 'Loading...' : mode === 'login' ? 'Sign In' : 'Sign Up'}
+            {loading ? 'Loading...' : mode === 'login' ? 'Sign In' : mode === 'signup' ? 'Sign Up' : 'Send Reset Email'}
           </button>
         </form>
 
         <p className="mt-5 text-center text-sm text-slate-500">
-          {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
-          <button
-            onClick={switchMode}
-            className="text-rose-500 hover:text-rose-600 font-medium"
-          >
-            {mode === 'login' ? 'Sign Up' : 'Sign In'}
-          </button>
+          {mode === 'forgot' ? (
+            <>
+              Remember it?{' '}
+              <button onClick={() => switchMode('login')} className="text-rose-500 hover:text-rose-600 font-medium">
+                Sign In
+              </button>
+            </>
+          ) : mode === 'login' ? (
+            <>
+              Don&apos;t have an account?{' '}
+              <button onClick={() => switchMode('signup')} className="text-rose-500 hover:text-rose-600 font-medium">
+                Sign Up
+              </button>
+            </>
+          ) : (
+            <>
+              Already have an account?{' '}
+              <button onClick={() => switchMode('login')} className="text-rose-500 hover:text-rose-600 font-medium">
+                Sign In
+              </button>
+            </>
+          )}
         </p>
 
         <p className="mt-6 text-center text-xs text-rose-200">🐾 designed for May Joy Hu 🐾</p>

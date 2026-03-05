@@ -63,7 +63,7 @@ export default function TaskCard({ task, taskType, onEdit, isDragOverlay = false
   return (
     <div
       ref={setNodeRef}
-      style={style}
+      style={{ ...style, touchAction: 'none' }}
       className={isDragging ? 'opacity-30' : ''}
       {...attributes}
       {...listeners}
