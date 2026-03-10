@@ -44,7 +44,8 @@ export default function AuthPage() {
     setMessage(null)
   }
 
-  const isMay = email.toLowerCase() === 'maybuny.hu@gmail.com'
+  const BRANDED_EMAILS = ['maybuny.hu@gmail.com', 'sidkapoor39@gmail.com']
+  const isMay = BRANDED_EMAILS.includes(email.toLowerCase())
   const subtitle = { login: 'Sign in to your account', signup: 'Create a new account', forgot: 'Reset your password' }
 
   return (

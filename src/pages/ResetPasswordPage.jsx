@@ -15,7 +15,8 @@ function EyeIcon({ open }) {
 }
 
 export default function ResetPasswordPage({ email, onDone }) {
-  const isMay = email?.toLowerCase() === 'maybuny.hu@gmail.com'
+  const BRANDED_EMAILS = ['maybuny.hu@gmail.com', 'sidkapoor39@gmail.com']
+  const isMay = BRANDED_EMAILS.includes(email?.toLowerCase())
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [showPassword, setShowPassword] = useState(false)

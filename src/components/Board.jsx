@@ -60,7 +60,8 @@ function buildGrouped(tasks) {
 
 export default function Board({ session }) {
   const userId = session.user.id
-  const isMay = session.user.email?.toLowerCase() === 'maybuny.hu@gmail.com'
+  const BRANDED_EMAILS = ['maybuny.hu@gmail.com', 'sidkapoor39@gmail.com']
+  const isMay = BRANDED_EMAILS.includes(session.user.email?.toLowerCase())
 
   const [tasksByStatus, setTasksByStatus] = useState(() => buildGrouped([]))
   const [taskTypes, setTaskTypes] = useState([])
