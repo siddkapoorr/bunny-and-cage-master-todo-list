@@ -49,6 +49,11 @@ export default function TaskCard({ task, taskType, onEdit, isDragOverlay = false
           {taskType.name}
         </span>
       )}
+      {task.closed_at && (
+        <p className="text-xs text-slate-400 mt-1.5">
+          Closed {new Date(task.closed_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+        </p>
+      )}
     </div>
   )
 

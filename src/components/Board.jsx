@@ -43,6 +43,7 @@ const STATUSES = [
 const DAY_STATUSES = STATUSES.filter(s => s.layout === 'column')
 const FULL_STATUSES = STATUSES.filter(s => s.layout === 'full')
 const STATUS_IDS = new Set(STATUSES.map(s => s.id))
+const CLOSED_STATUSES = new Set(['done', 'archived'])
 
 function buildGrouped(tasks) {
   const grouped = {}
@@ -181,8 +182,15 @@ export default function Board({ session }) {
       await syncColumn(currentContainer, finalItems)
     } else {
       // Cross-container move (state already updated in onDragOver)
-      const srcItems = tasksByStatus[originalContainer]
-      const dstItems = tasksByStatus[currentContainer]
+      const now = new Date().toISOString()
+      const srcItems = tasksByStatus[originalContainer].map(t =>
+        !CLOSED_STATUSES.has(originalContainer) && t.closed_at ? { ...t, closed_at: null } : t
+      )
+      const dstItems = tasksByStatus[currentContainer].map(t =>
+        CLOSED_STATUSES.has(currentContainer) && !t.closed_at ? { ...t, closed_at: now } : t
+      )
+
+      setTasksByStatus(prev => ({ ...prev, [originalContainer]: srcItems, [currentContainer]: dstItems }))
 
       await Promise.all([
         syncColumn(originalContainer, srcItems),
@@ -193,13 +201,14 @@ export default function Board({ session }) {
 
   async function syncColumn(status, items) {
     if (items.length === 0) return
+    const now = new Date().toISOString()
     await Promise.all(
-      items.map((task, i) =>
-        supabase
-          .from('tasks')
-          .update({ status, position: i })
-          .eq('id', task.id)
-      )
+      items.map((task, i) => {
+        const update = { status, position: i }
+        if (CLOSED_STATUSES.has(status) && !task.closed_at) update.closed_at = now
+        else if (!CLOSED_STATUSES.has(status) && task.closed_at) update.closed_at = null
+        return supabase.from('tasks').update(update).eq('id', task.id)
+      })
     )
   }
 
@@ -235,9 +244,14 @@ export default function Board({ session }) {
     const doneTasks = tasksByStatus['done'] ?? []
     if (doneTasks.length === 0) return
     const archivedCount = tasksByStatus['archived']?.length ?? 0
+    const now = new Date().toISOString()
     await Promise.all(
       doneTasks.map((task, i) =>
-        supabase.from('tasks').update({ status: 'archived', position: archivedCount + i }).eq('id', task.id)
+        supabase.from('tasks').update({
+          status: 'archived',
+          position: archivedCount + i,
+          closed_at: task.closed_at || now,
+        }).eq('id', task.id)
       )
     )
     setTasksByStatus(prev => ({
@@ -245,7 +259,7 @@ export default function Board({ session }) {
       done: [],
       archived: [
         ...(prev.archived ?? []),
-        ...doneTasks.map((t, i) => ({ ...t, status: 'archived', position: archivedCount + i })),
+        ...doneTasks.map((t, i) => ({ ...t, status: 'archived', position: archivedCount + i, closed_at: t.closed_at || now })),
       ],
     }))
   }

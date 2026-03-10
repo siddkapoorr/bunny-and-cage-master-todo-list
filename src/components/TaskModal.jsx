@@ -34,6 +34,12 @@ export default function TaskModal({ task, taskTypes, userId, initialStatus, onCl
     setLoading(true)
     setError(null)
 
+    const CLOSED_STATUSES = ['done', 'archived']
+    const isClosing = CLOSED_STATUSES.includes(status)
+    const closedAt = isClosing
+      ? (task?.closed_at || new Date().toISOString())
+      : null
+
     try {
       if (isEditing) {
         const { data, error } = await supabase
@@ -43,6 +49,7 @@ export default function TaskModal({ task, taskTypes, userId, initialStatus, onCl
             description: description.trim(),
             task_type_id: taskTypeId || null,
             status,
+            closed_at: closedAt,
           })
           .eq('id', task.id)
           .select('*, task_types(*)')
@@ -57,6 +64,7 @@ export default function TaskModal({ task, taskTypes, userId, initialStatus, onCl
             description: description.trim(),
             task_type_id: taskTypeId || null,
             status,
+            closed_at: closedAt,
             user_id: userId,
             position: 9999,
           })
