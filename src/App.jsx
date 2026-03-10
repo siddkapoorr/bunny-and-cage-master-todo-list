@@ -36,7 +36,7 @@ export default function App() {
   }
 
   if (isRecovery) {
-    return <ResetPasswordPage onDone={() => setIsRecovery(false)} />
+    return <ResetPasswordPage email={session?.user?.email} onDone={() => setIsRecovery(false)} />
   }
 
   if (!session) {

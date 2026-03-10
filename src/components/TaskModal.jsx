@@ -120,17 +120,6 @@ export default function TaskModal({ task, taskTypes, userId, initialStatus, onCl
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Description</label>
-            <textarea
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              placeholder="Optional description..."
-              rows={3}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-transparent resize-none"
-            />
-          </div>
-
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
@@ -158,6 +147,17 @@ export default function TaskModal({ task, taskTypes, userId, initialStatus, onCl
                 ))}
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Description</label>
+            <textarea
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+              placeholder="Optional description..."
+              rows={3}
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-transparent resize-none"
+            />
           </div>
 
           {/* Type color preview */}

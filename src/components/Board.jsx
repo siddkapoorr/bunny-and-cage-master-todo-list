@@ -60,6 +60,7 @@ function buildGrouped(tasks) {
 
 export default function Board({ session }) {
   const userId = session.user.id
+  const isMay = session.user.email?.toLowerCase() === 'maybuny.hu@gmail.com'
 
   const [tasksByStatus, setTasksByStatus] = useState(() => buildGrouped([]))
   const [taskTypes, setTaskTypes] = useState([])
@@ -269,11 +270,11 @@ export default function Board({ session }) {
     <div className="h-screen flex flex-col bg-pink-50">
       {/* Header */}
       <header className="bg-white border-b border-pink-100 px-3 sm:px-5 py-3 flex items-center justify-between flex-shrink-0 shadow-sm">
-        <h1 className="text-base font-bold text-rose-700 tracking-tight">
+        <h1 className="flex-shrink-0 text-base font-bold text-rose-700 tracking-tight">
           <span className="sm:hidden">🐰 BCM</span>
-          <span className="hidden sm:inline">🐰 Bunny and Cage Master To-Do List</span>
+          <span className="hidden sm:inline">🐰 {isMay ? 'Bunny and Cage Master To-Do List' : 'BCM To-Do List'}</span>
         </h1>
-        <div className="flex items-center gap-1 sm:gap-3">
+        <div className="flex flex-1 sm:flex-none justify-end items-center gap-1 sm:gap-3 ml-2 sm:ml-0">
           <button
             onClick={() => setModalState({})}
             className="flex-1 py-1.5 px-2 sm:px-3 text-xs bg-rose-400 hover:bg-rose-500 text-white font-medium rounded-lg transition-colors text-center"
@@ -388,7 +389,7 @@ export default function Board({ session }) {
 
         {/* Footer */}
         <div className="flex-shrink-0 text-center py-2 text-xs text-rose-300 select-none">
-          🐾 designed for May Joy Hu 🐾
+          {isMay ? '🐾 designed for May Joy Hu 🐾' : 'Designed by Sid Kapoor'}
         </div>
 
         <DragOverlay dropAnimation={{ duration: 150, easing: 'ease' }}>
