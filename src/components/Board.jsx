@@ -183,12 +183,12 @@ export default function Board({ session }) {
     } else {
       // Cross-container move (state already updated in onDragOver)
       const now = new Date().toISOString()
-      const srcItems = tasksByStatus[originalContainer].map(t =>
-        !CLOSED_STATUSES.has(originalContainer) && t.closed_at ? { ...t, closed_at: null } : t
-      )
-      const dstItems = tasksByStatus[currentContainer].map(t =>
-        CLOSED_STATUSES.has(currentContainer) && !t.closed_at ? { ...t, closed_at: now } : t
-      )
+      const srcItems = tasksByStatus[originalContainer]
+      const dstItems = tasksByStatus[currentContainer].map(t => {
+        if (CLOSED_STATUSES.has(currentContainer) && !t.closed_at) return { ...t, closed_at: now }
+        if (!CLOSED_STATUSES.has(currentContainer) && t.closed_at) return { ...t, closed_at: null }
+        return t
+      })
 
       setTasksByStatus(prev => ({ ...prev, [originalContainer]: srcItems, [currentContainer]: dstItems }))
 
