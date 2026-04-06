@@ -285,20 +285,20 @@ export default function Board({ session }) {
   return (
     <div className="h-screen flex flex-col bg-pink-50">
       {/* Header */}
-      <header className="bg-white border-b border-pink-100 px-3 sm:px-5 py-3 flex items-center justify-between flex-shrink-0 shadow-sm">
+      <header className="bg-white border-b border-pink-100 px-3 md:px-5 py-3 flex items-center justify-between flex-shrink-0 shadow-sm">
         <h1 className="flex-shrink-0 text-base font-bold text-rose-700 tracking-tight">
-          <span className="sm:hidden">🐰 BCM To-Do List</span>
-          <span className="hidden sm:inline">🐰 {isMay ? 'Bunny and Cage Master To-Do List' : 'BCM To-Do List'}</span>
+          <span className="md:hidden">🐰 BCM To-Do List</span>
+          <span className="hidden md:inline">🐰 {isMay ? 'Bunny and Cage Master To-Do List' : 'BCM To-Do List'}</span>
         </h1>
         <div className="flex items-center gap-2">
           {/* Mobile: + button + ⋯ menu */}
           <button
             onClick={() => setModalState({})}
-            className="sm:hidden w-8 h-8 flex items-center justify-center bg-rose-400 hover:bg-rose-500 text-white font-bold text-lg rounded-full transition-colors"
+            className="md:hidden w-8 h-8 flex items-center justify-center bg-rose-400 hover:bg-rose-500 text-white font-bold text-lg rounded-full transition-colors"
           >
             +
           </button>
-          <div className="relative sm:hidden">
+          <div className="relative md:hidden">
             <button
               onClick={() => setShowMenu(v => !v)}
               className="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-pink-50 rounded-full transition-colors text-xl leading-none"
@@ -329,20 +329,20 @@ export default function Board({ session }) {
           {/* Desktop: full buttons */}
           <button
             onClick={() => setModalState({})}
-            className="hidden sm:block py-1.5 px-3 text-xs bg-rose-400 hover:bg-rose-500 text-white font-medium rounded-lg transition-colors"
+            className="hidden md:block py-1.5 px-3 text-xs bg-rose-400 hover:bg-rose-500 text-white font-medium rounded-lg transition-colors"
           >
             + New Task
           </button>
           <button
             onClick={() => setShowTypeManager(true)}
-            className="hidden sm:block py-1.5 px-3 text-xs text-slate-600 hover:bg-pink-50 rounded-lg transition-colors"
+            className="hidden md:block py-1.5 px-3 text-xs text-slate-600 hover:bg-pink-50 rounded-lg transition-colors"
           >
             Manage Types
           </button>
-          <span className="text-xs text-slate-400 hidden sm:block">{session.user.email}</span>
+          <span className="text-xs text-slate-400 hidden md:block">{session.user.email}</span>
           <button
             onClick={() => supabase.auth.signOut()}
-            className="hidden sm:block py-1.5 px-3 text-xs text-slate-500 hover:bg-pink-50 rounded-lg transition-colors"
+            className="hidden md:block py-1.5 px-3 text-xs text-slate-500 hover:bg-pink-50 rounded-lg transition-colors"
           >
             Sign Out
           </button>
