@@ -2,14 +2,16 @@ import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 
 const DEFAULT_COLORS = [
-  // Row 1 — Reds → Oranges → Ambers  (hue ~0° → 43°)
-  '#ef4444', '#f87171', '#f97316', '#fb923c', '#f59e0b', '#fbbf24',
-  // Row 2 — Emerald → Teal → Cyan → Blue  (hue ~161° → 217°)
-  '#10b981', '#34d399', '#2dd4bf', '#06b6d4', '#3b82f6', '#60a5fa',
-  // Row 3 — Indigo → Purple → Fuchsia  (hue ~239° → 293°)
-  '#6366f1', '#818cf8', '#a855f7', '#c084fc', '#d946ef', '#e879f9',
-  // Row 4 — Pink → Rose  (hue ~322° → 351°)
-  '#be185d', '#ec4899', '#f472b6', '#e11d48', '#f43f5e', '#fb7185',
+  // Row 1 — Bright warm (red → green)
+  '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16', '#22c55e',
+  // Row 2 — Bright cool (emerald → indigo)
+  '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1',
+  // Row 3 — Vivid purple/pink
+  '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#fb7185',
+  // Row 4 — Deep/dark warm
+  '#991b1b', '#9a3412', '#78350f', '#854d0e', '#14532d', '#134e4a',
+  // Row 5 — Deep/dark cool
+  '#1e3a8a', '#3730a3', '#4c1d95', '#581c87', '#831843', '#4b5563',
 ]
 
 // 6-column grid keeps the 4 themed rows visually intact
