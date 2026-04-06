@@ -69,6 +69,7 @@ export default function Board({ session }) {
   const [activeId, setActiveId] = useState(null)
   const [modalState, setModalState] = useState(null) // null | { task?: obj, initialStatus?: string }
   const [showTypeManager, setShowTypeManager] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
   const [loading, setLoading] = useState(true)
 
   const draggedFromContainer = useRef(null)
@@ -286,28 +287,62 @@ export default function Board({ session }) {
       {/* Header */}
       <header className="bg-white border-b border-pink-100 px-3 sm:px-5 py-3 flex items-center justify-between flex-shrink-0 shadow-sm">
         <h1 className="flex-shrink-0 text-base font-bold text-rose-700 tracking-tight">
-          <span className="sm:hidden">🐰 BCM</span>
+          <span className="sm:hidden">🐰 BCM To-Do List</span>
           <span className="hidden sm:inline">🐰 {isMay ? 'Bunny and Cage Master To-Do List' : 'BCM To-Do List'}</span>
         </h1>
-        <div className="flex flex-1 sm:flex-none justify-end items-center gap-1 sm:gap-3 ml-2 sm:ml-0">
+        <div className="flex items-center gap-2">
+          {/* Mobile: + button + ⋯ menu */}
           <button
             onClick={() => setModalState({})}
-            className="flex-1 py-1.5 px-2 sm:px-3 text-xs bg-rose-400 hover:bg-rose-500 text-white font-medium rounded-lg transition-colors text-center"
+            className="sm:hidden w-8 h-8 flex items-center justify-center bg-rose-400 hover:bg-rose-500 text-white font-bold text-lg rounded-full transition-colors"
           >
-            <span className="sm:hidden">+</span>
-            <span className="hidden sm:inline">+ New Task</span>
+            +
+          </button>
+          <div className="relative sm:hidden">
+            <button
+              onClick={() => setShowMenu(v => !v)}
+              className="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-pink-50 rounded-full transition-colors text-xl leading-none"
+            >
+              ···
+            </button>
+            {showMenu && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setShowMenu(false)} />
+                <div className="absolute right-0 top-full mt-1 bg-white rounded-xl shadow-lg border border-pink-100 z-20 min-w-[160px] py-1 overflow-hidden">
+                  <button
+                    onClick={() => { setShowTypeManager(true); setShowMenu(false) }}
+                    className="w-full px-4 py-2.5 text-sm text-slate-700 hover:bg-pink-50 text-left"
+                  >
+                    Manage Types
+                  </button>
+                  <button
+                    onClick={() => supabase.auth.signOut()}
+                    className="w-full px-4 py-2.5 text-sm text-slate-500 hover:bg-pink-50 text-left"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Desktop: full buttons */}
+          <button
+            onClick={() => setModalState({})}
+            className="hidden sm:block py-1.5 px-3 text-xs bg-rose-400 hover:bg-rose-500 text-white font-medium rounded-lg transition-colors"
+          >
+            + New Task
           </button>
           <button
             onClick={() => setShowTypeManager(true)}
-            className="flex-1 py-1.5 px-2 sm:px-3 text-xs text-slate-600 hover:bg-pink-50 rounded-lg transition-colors text-center"
+            className="hidden sm:block py-1.5 px-3 text-xs text-slate-600 hover:bg-pink-50 rounded-lg transition-colors"
           >
-            <span className="sm:hidden">Types</span>
-            <span className="hidden sm:inline">Manage Types</span>
+            Manage Types
           </button>
           <span className="text-xs text-slate-400 hidden sm:block">{session.user.email}</span>
           <button
             onClick={() => supabase.auth.signOut()}
-            className="flex-1 py-1.5 px-2 sm:px-3 text-xs text-slate-500 hover:bg-pink-50 rounded-lg transition-colors text-center"
+            className="hidden sm:block py-1.5 px-3 text-xs text-slate-500 hover:bg-pink-50 rounded-lg transition-colors"
           >
             Sign Out
           </button>
